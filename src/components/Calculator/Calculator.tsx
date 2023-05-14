@@ -1,4 +1,4 @@
-import {Button, Col, Input, Layout, Row, Typography} from 'antd';
+import {Badge, Button, Col, Input, Layout, Row, Typography} from 'antd';
 import {useState} from 'react';
 import {isEmpty} from 'lodash';
 
@@ -21,14 +21,18 @@ export const Calculator = () => {
     }
   }
 
-  const onChange = (newNumber: string | number) => {
+  const onAddNumber = (newNumber: string | number) => {
     setCurrentNumber(`${currentNumber}${newNumber}`);
+  }
+
+  const onChange = (newNumber: string | number) => {
+    setCurrentNumber(`${newNumber}`);
   }
 
   const calc = () => {
     const calcArr = [...historyList];
     calcArr.pop();
-    return  eval(calcArr.join(' ')) || 0;
+    return eval(calcArr.join(' ')) || 0;
   }
 
   return (
@@ -38,12 +42,19 @@ export const Calculator = () => {
     }}>
       <Layout.Content>
         <Row gutter={[0, 8]}>
-          <Col span={24}>
+          <Col span={20}>
             <Typography>
               <p>
                 {historyList.join(' ')}
               </p>
-              <p>{calc()}</p>
+            </Typography>
+          </Col>
+          <Col span={4}>
+            <Typography>
+              <Badge.Ribbon
+                color={'green'}
+                text={`= ${calc()}`}
+              />
             </Typography>
           </Col>
           <Col span={24}>
@@ -57,7 +68,7 @@ export const Calculator = () => {
             <Row gutter={[8, 8]}>
               {numberActions.map(n => (
                 <Col span={7} key={n}>
-                  <Button onClick={() => onChange(n)} shape={'circle'} size={'large'}>{n}</Button>
+                  <Button onClick={() => onAddNumber(n)} shape={'circle'} size={'large'}>{n}</Button>
                 </Col>
               ))}
             </Row>
